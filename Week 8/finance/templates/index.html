@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Index
+{% endblock %}
+
+{% block main %}
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Symbol</th>
+      <!--<th scope="col">Name</th> -->
+      <th scope="col">Shares</th>
+      <th scope="col">Price</th>
+      <th scope="col">TOTAL</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for key, value in userStocks.items() %}
+    {% if value != 0%}
+    <tr>
+    <td>{{ key }}</td>
+    <td>{{ value }}</td>
+    <td>{{ (stockValues[key] / value)|round(2, 'common') }}</td>
+    <td>{{ stockValues[key]| round(2, 'common') }}</td>
+    </tr>
+    {% endif%}
+    {% endfor %}
+    <tr>
+      <td>CASH</td>
+      <td></td>
+      <td></td>
+      <td>${{ userCash }} </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><b>${{ (userCash + valueOfAllStocks)|round(2, 'common') }}</b></td>
+    </tr>
+  </tbody>
+</table>
+
+{% endblock %}

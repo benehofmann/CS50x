@@ -1,0 +1,31 @@
+{%extends "layout.html" %}
+
+{% block main %}
+        <h1>Register to CS50 Finance</h1>
+
+        <form action="/register" method="post" onkeyup='check();'> <!--Submit Data via post to the register route-->
+        <div class="form-group">
+        <input type="text" name="name" class="form-control" placeholder="username">
+        <input type="password" name="password" class="form-control" id="password" placeholder="password">
+        <input type="password" name="repassword" id="repassword" class="form-control" placeholder="Re-enter password">
+        </div>
+        <input type="submit" name="submit" class="btn btn-primary">
+        </form>
+        <span id='message'></span>
+
+        <script type="text/javascript">
+            var check = function() {
+
+
+  if ((document.getElementById('password').value == document.getElementById('repassword').value) && (document.getElementById('password').value != "") && (document.getElementById('repassword').value != ""))
+    {
+    document.getElementById('message').style.color = 'green';
+    document.getElementById('message').innerHTML = 'passwords matching';
+  } else {
+    document.getElementById('message').style.color = 'red';
+    document.getElementById('message').innerHTML = 'passwords not matching';
+  }
+}
+        </script>
+ {% endblock %}
+
