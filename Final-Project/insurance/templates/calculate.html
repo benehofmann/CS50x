@@ -1,0 +1,279 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Calculator
+{% endblock %}
+
+{% block main %}
+<div class="container">
+      <h1>Riester Payment Calculator</h1>
+</div>
+
+
+<!--Calculator Form -->
+<div class="form text-center d-block">
+
+    <!------ Marital Status ----->
+    <div class="mt-3 topcontainer">
+        <p class="input-group text-white bg-info rounded infotext mb-0 text-center font-weight-bold">Marital Status</p>
+    </div>
+    <div class="input-group">
+        <select class="costum-select form-control" id="marital_status">
+            <option selected>Choose...</option>
+            <option value="single">Single</option>
+            <option value="married">Married</option>
+            <option value="widowed">Widowed</option>
+        </select>
+    </div>
+
+    <!------ Partner contract ----->
+    <div class="mt-3 topcontainer data-partner-container" id="question_contract_partner">
+        <p class="input-group text-white bg-info rounded infotext mb-0 text-center font-weight-bold" data-toggle="tooltip" title="The contract of your partner may have impact on your optimal payment" data-placement="top">Does your partner have a "Riester"-Contract too?*</p>
+    </div>
+    <div class="input-group data-partner-container" id="contract_partner">
+        <div class="form-control custom-radio">
+          <input type="radio" id="partner_yes" name="contract_partner" class="data-partner custom-control-input partner-data radiocheck" value="yes">
+          <label class="custom-control-label" for="partner_yes">Yes</label>
+        </div>
+        <div class="form-control custom-radio">
+          <input type="radio" id="partner_no" name="contract_partner" class="data-partner custom-control-input partner-data radiocheck" value="no">
+          <label class="custom-control-label " for="partner_no">No</label>
+        </div>
+    </div>
+
+    <!------ beneficiary for customer and partner ----->
+    <div class="mt-3 topcontainer">
+        <p class="input-group text-white bg-info rounded infotext mb-0 text-center font-weight-bold"  data-toggle="tooltip" title="Direct beneficiary: compulsorily insured employees, agricultural workers and civil servants. Indirect beneficiary: The Rest" data-placement="top">Your beneficiary*</p>
+    </div>
+    <!------ beneficiary customer  ----->
+    <div class="input-group">
+        <div class="form-control custom-radio" id="beneficiary_you_direct_container">
+          <input type="radio" id="direct" name="beneficiary_you" class="custom-control-input radiocheck" value="direct">
+          <label class="custom-control-label" for="direct">Direct</label>
+        </div>
+        <div class="form-control custom-radio" id="beneficiary_you_indirect_container">
+          <input type="radio" id="indirect" name="beneficiary_you" class="custom-control-input radiocheck" value="indirect">
+          <label class="custom-control-label" for="indirect">Indirect</label>
+        </div>
+    </div>
+
+    <!------ beneficiary partner  ----->
+    <div class="topcontainer data-partner-container partner-input-fields">
+        <p class="input-group text-white bg-info rounded infotext mb-0 text-center font-weight-bold"  data-toggle="tooltip" title="Direct beneficiary: compulsorily insured employees, agricultural workers and civil servants. Indirect beneficiary: The Rest" data-placement="top">beneficiary for your partner*</p>
+    </div>
+    <div class="input-group data-partner-container partner-input-fields">
+        <div class="form-control custom-radio data-partner" id="beneficiary_partner_direct_container">
+          <input type="radio" id="partner_direct" name="beneficiary_partner" class="data-partner custom-control-input radiocheck" value="direct">
+          <label class="custom-control-label" for="partner_direct">Direct</label>
+        </div>
+        <div class="form-control custom-radio data-partner" id="beneficiary_partner_indirect_container">
+          <input type="radio" id="partner_indirect" name="beneficiary_partner" class="data-partner custom-control-input radiocheck" value="indirect">
+          <label class="custom-control-label" for="partner_indirect">Indirect</label>
+        </div>
+    </div>
+
+    <!------ Child Allowance Data  ----->
+    <div class="mt-3 topcontainer font-weight-bold">
+        <p class="input-group text-white bg-info rounded infotext mb-0"  data-toggle="tooltip" title="Usually you get child allowances for every child. Please fill the number of children you or your partner are getting child allowances" data-placement="top">Child Allowance Data*</p>
+    </div>
+
+    <!------ Child Allowance User ------>
+        <div class="input-group">
+        <select class="form-control childinfo" id="children_overall" name="children_overall">
+            <option>For how many children do you or your familiy get child allowance?</option>
+            <option>0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+            <option>9</option>
+            <option>10</option>
+        </select>
+        </div>
+       <div class="mt-0 topcontainer font-weight-bold">
+        <p class="input-group text-white bg-info rounded infotext mb-0">Allowances you receive</p>
+    </div>
+
+                    <div class="input-group">
+        <select class="form-control childinfo" id="born_before_2008_user" name="children_before_2008_user">
+            <option>born before 2008</option>
+            <option>0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+            <option>9</option>
+            <option>10</option>
+        </select>
+        </div>
+
+
+        <div class="input-group">
+        <select class="form-control childinfo" style="display: block" id="born_2008_or_later_user" name="children_after_2008_user">
+            <option>born 2008 or later</option>
+            <option>0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+            <option>9</option>
+            <option>10</option>
+        </select>
+        </div>
+
+    <!------ Child Allowance Partner ------>
+       <div class="mt-0 topcontainer font-weight-bold data-partner-container partner-input-fields">
+        <p class="input-group text-white bg-info rounded infotext mb-0 data-partner-container">Allowances your partner receives</p>
+    </div>
+
+
+    <div class="input-group border-bottom border-left border-right data-partner-container partner-input-fields" id="upperContainer_Allowance_Partner">
+
+                    <div class="input-group-prepend">
+        </div>
+        <select class="form-control w-100 childinfo" style="display: block" id="born_before_2008_partner" name="children_before_2008_partner">
+            <option>born before 2008</option>
+            <option>0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+            <option>9</option>
+            <option>10</option>
+        </select>
+
+        <select class="form-control childinfo" style="display: block" id="born_2008_or_later_partner" name="children_after_2008_partner">
+            <option>born 2008 or later</option>
+            <option>0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+            <option>9</option>
+            <option>10</option>
+        </select>
+
+    </div>
+
+    <!------- Insurance Fee-Data ------->
+    <!------ Full beneficiary ----------->
+
+    <!-- as Dropdown Buttons -->
+<div class="mt-3 topcontainer font-weight-bold border">
+     <p class="input-group text-white bg-info rounded infotext mb-0 text-center font-weight-bold" data-html="true" data-toggle="tooltip" title="<b>full subsidy </b> : the lowest possible payment to get full subsidy <br/> <b>maximum:</b> the highest possible payment" data-placement="top">Which payment do you prefer?*</p>
+</div>
+<div class="input-group border">
+         <select class="form-control border-top-0" id="payment_amount">
+            <option>full subsidy </option>
+            <option>maximum</option>
+        </select>
+    </div>
+    <div class="input-group border">
+    <select class="form-control border-top-0" id="payment_method_options">
+            <option>monthly</option>
+            <option>quarterly</option>
+            <option>half-yearly</option>
+            <option>annual</option>
+            </select>
+            </div>
+    <div class="input-group border">
+    <input autocomplete="off"  data-html="true" class="form-control border-top-0 border-right-0 border-bottom-0 d-inline-flex" name="income_last_year" id="income_last_year" placeholder="last year`s income in EUR (will get rounded up)" type="number" data-toggle="tooltip" title="Last year´s income is needed to calculate the optimal payment. The value will get rounded up </br> <b> Agricultural workers:  </b> The income form 2 years ago is needed. Example: For your payment calculation in 2020 is the 2018´s income needed." data-placement="top"/>
+
+    </div>
+
+</br>
+
+<div class="input-group">
+    <button type="button" class="btn mt-4 btn-info border-dark btn-lg btn-block font-weight-bold rounded-circle m-auto w-25 pl-0 pr-0"  id="calculateButton">Start</button>
+    <button type="button" class="btn mt-4 btn-info border-dark btn-lg btn-block font-weight-bold rounded-circle m-auto w-25 pl-0 pr-0" id="resetButton">Clear</button>
+</div>
+
+
+</div>
+
+
+
+<div class="container mt-3 bg-dark rounded w-75 output">
+    <div class="container text-center text-white" type="text" id="needed_payment" readonly>needed_payment </div>
+    <div class="container text-center text-white" type="text"  id="payment_method" readonly> payment_method </div>
+</div>
+
+<div class="container">
+    <p class="font-weight-bold">This calculator can´t replace the professional advice by an independant financial advisor</p>
+</div>
+
+<button type="button" class="btn mt-4 btn-info border-dark btn-lg btn-block font-weight-bold rounded-circle m-auto output w-50 pl-0 pr-0" id="showCalculation">Details</button>
+
+</br>
+</br>
+
+<!---- Calculate Table ---->
+<table class="table text-left outputdetails" id="payment_table">
+  <thead class="thead-dark">
+    <tr class="text-center table-header">
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="border-0">
+      <th scope="row">Income</th>
+      <td id="income">0 EUR</td>
+    </tr>
+    <tr>
+      <th scope="row">4% of your income max 2.100 EUR</th>
+      <td id="4_percent_income">0 EUR</td>
+    </tr>
+    <tr>
+      <th scope="row">minus basic subsidy</th>
+      <td id="basic_subsidy">0 EUR</td>
+    </tr>
+    <tr>
+        <th scope data-toggle="tooltip" title="You don´t get partner subsidy if your´re single/widowed or your partner has directl beneficiary" data-placement="top"="row">minus partner subsidy*</th>
+        <td id="partner_subsidy">0 EUR</td>
+    </tr>
+    <tr>
+      <th scope="row">minus child subsidy (born before 2008)</th>
+      <td id="child_before_2008">0 EUR</td>
+    </tr>
+    <tr>
+      <th scope="row">minus child subsidy (born 2008 or later)</th>
+      <td id="child_2008_or_later">0 EUR</td>
+    </tr>
+    <tr>
+      <th scope="row">final Result</th>
+      <td id="final_result">0 EUR</td>
+    </tr>
+    </tbody>
+    </table>
+
+<button type="button" class="btn mt-4 btn-info border-dark btn-lg btn-block font-weight-bold rounded-circle outputdetails m-auto w-50 pl-0 pr-0" id="pdfButton">Get PDF</button>
+
+<footer class="footer bg-dark fixed-bottom ">
+      <div class="container text-white text-muted">
+          <p style="font-size:12px">Developed as final CS50-WebTrack-Project by Benedikt Hofmann</p>
+      </div>
+    </footer>
+
+
+
+{% endblock %}
+
