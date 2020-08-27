@@ -1,0 +1,403 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Calculator
+{% endblock %}
+
+{% block main %}
+<h1>Riester Payment Calculator</h1>
+
+<!--Calculator Form -->
+<div class="form text-center d-block">
+<form action="/calculate" method="post">
+
+    <!------ Marital Status ----->
+    <div class="mt-3 container-fluid topcontainer ">
+        <p class="input-group text-white bg-info rounded infotext mb-0 text-center font-weight-bold">Choose marital Status</p>
+    </div>
+    <div class="input-group mt3">
+        <div class="input-group-prepend">
+           <label class="input-group-text" for="marital_status" data-toggle="tooltip" title="Das ist ein ganz langer Text für einen Test oder ein Berechnungsbeispiel" data-placement="top">Marital</label>
+        </div>
+        <select class="costum-select form-control" id="marital_status">
+            <option selected>Choose...</option>
+            <option value="single">Single</option>
+            <option value="married">Married</option>
+            <option value="widowed">Widowed</option>
+        </select>
+    </div>
+
+    <!------ Partner contract ----->
+    <div class="mt-3 container-fluid topcontainer data-partner-container" id="question_contract_partner">
+        <p class="input-group text-white bg-info rounded infotext mb-0 text-center font-weight-bold">Does your partner have a "Riester"-Contract too?</p>
+    </div>
+    <div class="input-group border data-partner-container" id="contract_partner">
+        <div class="input-group-prepend partner-data">
+            <label class="input-group-text" for="beneficiary">Contract Partner</label>
+        </div>
+        <div class="form-control custom-radio custom-control-inline m-0 pl-12">
+          <input type="radio" id="partner_yes" name="contract_partner" class="data-partner custom-control-input partner-data">
+          <label class="custom-control-label" for="partner_yes">Yes</label>
+        </div>
+        <div class="form-control custom-radio custom-control-inline m-0 pl-12 partner-data">
+          <input type="radio" id="partner_no" name="contract_partner" class="data-partner custom-control-input partner-data">
+          <label class="custom-control-label " for="partner_no">No</label>
+        </div>
+    </div>
+
+    <!------ beneficiary for customer and partner ----->
+    <div class="mt-3 container-fluid topcontainer">
+        <p class="input-group text-white bg-info rounded infotext mb-0 text-center font-weight-bold">Please choose beneficiary</p>
+    </div>
+    <!------ beneficiary customer  ----->
+    <div class="input-group border">
+        <div class="input-group-prepend">
+            <label class="input-group-text" for="beneficiary">You</label>
+        </div>
+        <div class="custom-control custom-radio custom-control-inline mt-2 pl-5 ">
+          <input type="radio" id="direct" name="beneficiary_you" class="custom-control-input">
+          <label class="custom-control-label" for="direct">Direct</label>
+        </div>
+        <div class="custom-control custom-radio custom-control-inline mt-2 pl-5">
+          <input type="radio" id="indirect" name="beneficiary_you" class="custom-control-input">
+          <label class="custom-control-label" for="indirect">Indirect</label>
+        </div>
+    </div>
+
+    <!------ beneficiary partner  ----->
+    <div class="input-group border-left border-right border-bottom data-partner-container partner-input-fields">
+        <div class="input-group-prepend">
+            <label class="input-group-text" for="beneficiary">Partner</label>
+        </div>
+        <div class="custom-control custom-radio custom-control-inline mt-2 pl-5 data-partner">
+          <input type="radio" id="partner_direct" name="beneficiary_partner" class="data-partner custom-control-input">
+          <label class="custom-control-label" for="partner_direct">Direct</label>
+        </div>
+        <div class="custom-control custom-radio custom-control-inline mt-2 pl-5 data-partner">
+          <input type="radio" id="partner_indirect" name="beneficiary_partner" class="data-partner custom-control-input">
+          <label class="custom-control-label" for="partner_indirect">Indirect</label>
+        </div>
+    </div>
+
+    <!------ Child Allowance Data  ----->
+    <div class="mt-3 container-fluid topcontainer font-weight-bold">
+        <p class="input-group text-white bg-info rounded infotext mb-0 ">Child Allowance Data <span style="text-decoration: underline; margin-left: 3px; margin-right: 3px"> </span></p>
+    </div>
+
+    <!------ Child Allowance User ------>
+    <div class="input-group border">
+         <input autocomplete="off"  class="form-control w-100" style="display: block" id="children_overall" name="children_overall" placeholder="For how many children do you and your partner get child allowances over all?" type="number" min="0" required />
+        <div class="input-group-prepend">
+                    <div class="input-group-prepend">
+            <label class="input-group-text font-weight-bold">You</label>
+        </div>
+            <label class="input-group-text">born before 2008</label>
+            <input autocomplete="off"  class="form-control" name="children_before_2008_user" id="born_before_2008_user" placeholder="No of Children" type="number" min="0" required />
+        </div>
+        <div class="input-group-prepend">
+            <label class="input-group-text">born after 2008</label>
+            <input autocomplete="off"  class="form-control border-0 d-inline-flex" name="children_after_2008_user" id="born_2008_or_later_user" placeholder="No of Children" type="number" min="0"/>
+        </div>
+    </div>
+    <!------ Child Allowance Partner ------>
+    <div class="input-group border-bottom border-left border-right data-partner-container partner-input-fields" id="upperContainer_Allowance_Partner">
+        <div class="input-group-prepend data-partner-container">
+                    <div class="input-group-prepend">
+            <label class="input-group-text font-weight-bold">Partner</label>
+        </div>
+            <label class="input-group-text">born before 2008</label>
+            <input autocomplete="off"  class="form-control" name="children_before_2008_partner" id="born_before_2008_partner" placeholder="No of Children" type="number" min="0" required />
+        </div>
+        <div class="input-group-prepend data-partner-container">
+            <label class="input-group-text">born 2008 or later</label>
+            <input autocomplete="off"  class="form-control border-0 d-inline-flex" name="children_after_2008_partner" id="born_2008_or_later_partner" placeholder="No of Children" type="number" min="0" required />
+        </div>
+    </div>
+
+    <!------- Insurance Fee-Data ------->
+    <!------ Full beneficiary ----------->
+
+    <!-- as Dropdown Buttons -->
+<div class="mt-3 topcontainer font-weight-bold border">
+     <p class="input-group text-white bg-info rounded infotext mb-0 text-center font-weight-bold">Which payment do you prefer?</p>
+</div>
+<div class="input-group border">
+    <div class="form-group m-0">
+         <select class="form-control border-top-0" id="payment_amount">
+            <option>full subsidy </option>
+            <option>maximal subsidized payment</option>
+            <option>individual</option>
+        </select>
+    </div>
+    <select class="form-control border-top-0" id="payment_method_options">
+            <option>monthly</option>
+            <option>quarterly</option>
+            <option>half-yearly</option>
+            <option>annual</option>
+        </div>
+    </div>
+    <input autocomplete="off"  class="form-control border-top-0 border-right-0 border-bottom-0 d-inline-flex text-right" name="income_last_year" id="income_last_year" placeholder="last year`s income (will get rounded up)" type="number"/>
+</div>
+
+<button type="button" class="btn mt-4 btn-info border-dark border-2 btn-lg btn-block font-weight-bold" id="calculateButton">Start</button>
+
+</div>
+
+
+</form>
+
+<!---- Calculate Table ---->
+<table class="table mt-5 text-left">
+  <thead class="thead-dark">
+    <tr class="text-center table-header">
+      <th colspan="2" scope="col">Calculated Payment</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="border-0">
+      <th scope="row">Income</th>
+      <td id="income">Mark</td>
+    </tr>
+    <tr>
+      <th scope="row">4% of your income max 2.100 EUR</th>
+      <td id="4_percent_income">Jacob</td>
+    </tr>
+    <tr>
+      <th scope="row">basic subsidy</th>
+      <td id="basic_subsidy">175 EUR</td>
+    </tr>
+    <tr>
+      <th scope="row">minus child subsidy (born before 2008)</th>
+      <td id="child_before_2008">Filler</td>
+    </tr>
+    <tr>
+      <th scope="row">minus child subsidy (born 2008 or later)</th>
+      <td id="child_2008_or_later">Filler</td>
+    </tr>
+    </tbody>
+    </table>
+    <table class="table table-borderless text-left">
+        <tbody>
+        <div class="border-top border-bottom mt-0 border-dark border-2">
+    <tr class="bg-info">
+      <th scope="row">needed payment for full subsidy</th>
+      <td id="needed_payment">Filler</td>
+    </tr>
+    <tr class="bg-info">
+      <th scope="row">your payment method</th>
+      <td id="payment_method">Filler</td>
+    </tr>
+    </div>
+  </tbody>
+</table>
+
+
+
+
+<script>
+$(function(){
+  $('[data-toggle="tooltip"]').tooltip();
+
+  // Generate Event-Listeners for the Form-Fields
+    var marital = document.getElementById("marital_status");
+    var calculateButton = document.getElementById("calculateButton")
+    var income_last_year = document.getElementById("income_last_year");
+    var contractPartnerYes = document.getElementById("partner_yes");
+    var contractPartnerNo = document.getElementById("partner_no");
+    marital.addEventListener("change", togglePartner);
+    calculateButton.addEventListener("click", calculatePayment);
+    income_last_year.addEventListener("change", round);
+    contractPartnerYes.addEventListener("change", disablePartnerInput);
+    contractPartnerNo.addEventListener("change", disablePartnerInput);
+
+    function round() {
+        $("#income_last_year").val(Math.ceil(parseFloat(income_last_year.value).toFixed(2)) );
+
+    }
+
+   function togglePartner(){
+
+
+    switch($("#marital_status option:selected").val()) {
+        case "single":
+            disablePartnerFields();
+            break;
+        case "married":
+            enablePartnerFields();
+            break;
+        case "widowed":
+            disablePartnerFields();
+            break;
+    }
+   }
+
+   function disablePartnerInput() {
+       if($("#partner_yes").is(":checked")) {$(".partner-input-fields").show(); }
+
+        if($("#partner_no").is(":checked")) {$(".partner-input-fields").hide(); }
+   }
+
+   function disablePartnerFields() {
+
+            $(".data-partner-container").hide();
+            $(".data-partner").prop("checked", false);
+
+
+   }
+
+   function enablePartnerFields() {
+
+        $(".data-partner-container").css("display", "flex");
+
+
+
+   }
+
+   function calculatePayment() {
+       //reset color
+       $("#children_overall").css("background-color", "white");
+
+       marital_status = $("#marital_status option:selected").val();
+
+
+
+       //#1 check if single or married
+
+        //TODO check for valid children number
+        no_Of_Children = $("#children_overall").val();
+
+        //get user children before 2008
+        children_before_2008_user = parseInt($("#born_before_2008_user").val());
+        isNaN(children_before_2008_user) == true ? children_before_2008_user = 0 : parseInt($("#born_before_2008_user").val());
+
+       //get user children after 2008
+        children_after_2008_user = parseInt($("#born_2008_or_later_user").val());
+        isNaN(children_after_2008_user) == true ? children_after_2008_user = 0 : parseInt($("#born_2008_or_later_user").val());
+
+        //get partner children before 2008
+        children_before_2008_partner = parseInt($("#born_before_2008_partner").val());
+        isNaN(children_before_2008_partner) == true ? children_before_2008_partner = 0 : parseInt($("#born_2008_or_later_user").val());
+
+        //get partner children after 2008
+        children_after_2008_partner = parseInt($("#born_2008_or_later_partner").val());
+        isNaN(children_after_2008_partner) == true ? children_after_2008_partner = 0 : parseInt($("#born_2008_or_later_user").val());
+
+        //#2 check child-data
+        var child_subsidy_before_2008 =  (children_before_2008_user + children_before_2008_partner) * 185;
+        var child_subsidy_2008_or_later =  (children_after_2008_user + children_after_2008_partner) * 300;
+
+        //check if children numbers are equal
+        if(no_Of_Children != children_before_2008_user + children_after_2008_user + children_before_2008_partner + children_after_2008_partner) {
+            $("#children_overall").css("background-color", "yellow");
+            alert("Please fill child data");
+            return;
+        }
+
+        if(marital_status == "single" || marital_status == "widowed") {
+            alert("Test")
+        } else if (marital_status == "married") {
+         alert("Starting married calculation")
+        } else {
+            alert("Marital Status for calculation needed")
+        }
+
+
+       //# calculate payment single or married
+        var income = parseInt($("#income_last_year").val());
+        var income_4_percent = (income / 100) * 4;
+
+        //change table data
+        $("#income").html(income + " EUR");
+
+        if(income_4_percent > 2100) {
+            $("#4_percent_income").html("2100" + " EUR");
+            income_4_percent = 2100;
+        } else {
+            $("#4_percent_income").html(income_4_percent + " EUR");
+        }
+
+        $("#child_before_2008").html(child_subsidy_before_2008 + " EUR");
+        $("#child_2008_or_later").html(child_subsidy_2008_or_later + " EUR");
+
+        //check payment for subsidy
+        var needed_payment = Math.ceil(parseFloat(income_4_percent - 175 - child_subsidy_before_2008 - child_subsidy_2008_or_later)).toFixed(2);
+        $("#needed_payment").html((needed_payment < 60) ? 60 + " EUR" : needed_payment + " EUR");
+
+        // get payment with payment method
+        var payment_method = $("#payment_method_options").val();
+
+
+        switch(payment_method) {
+            case "monthly":
+                $("#payment_method").html(parseFloat(needed_payment / 12).toFixed(2) + " EUR per month");
+                break;
+
+            case "quarterly":
+                $("#payment_method").html(parseFloat(needed_payment / 4).toFixed(2) + " EUR per quarter");
+                break;
+
+            case "half-yearly":
+                $("#payment_method").html(parseFloat(needed_payment / 2).toFixed(2) + " EUR per half-year");
+                break;
+
+            case "annual":
+                $("#payment_method").html(parseFloat(needed_payment).toFixed(2) + " EUR per year");
+                break;
+        }
+
+   }
+});
+
+
+</script>
+
+<style>
+.partner-input-fields{
+
+}
+
+
+.table-header{
+    font-size: 1.25em;
+}
+
+.data-partner-container {
+    display: none;
+}
+
+.data-partner {
+
+}
+
+.border-2 {
+    border-width:2px;
+}
+
+.infotext {
+    padding-left: 10px;
+    padding-right: 10px;
+
+}
+
+.topcontainer {
+    padding-right: 0px;
+    padding-left: 0px;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+</style>
+
+
+{% endblock %}
+

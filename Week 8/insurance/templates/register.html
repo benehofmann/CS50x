@@ -1,0 +1,228 @@
+{%extends "layout.html" %}
+
+{% block main %}
+<h1>Register to CS50 Insurance</h1>
+
+<form action="/register" method="post" onkeyup='check();'> <!--Submit Data via post to the register route-->
+  <div class="input-group mt-3">
+    <div class="input-group-prepend mb-3 mt-3">
+      <span class="input-group-text" id="username">Username/Password</span>
+    </div>
+    <input type="text" name="username" class="form-control mb-3 mt-3" placeholder="Username" required>
+   <input type="email" id="email" name="email" class="form-control mb-3 mt-3" placeholder="E-Mail" required>
+
+
+      <!--   <div class="container">
+ <meter id="meter" min="0" low="30" high="60" max="100" optimum="80" value="77"></meter>
+      </div> -->
+
+  </div>
+    <div class="input-group">
+    <div class="input-group-prepend mb-3">
+      <span class="input-group-text" id="username_password">Password</span>
+    </div>
+     <input type="password" name="password" id="password" class="form-control mb-3" id="password" placeholder="Password" onkeyup="checkPassStrength(document.getElementById('password').value)"required>
+       <input type="password" name="repassword" id="repassword" class="form-control mb-3" placeholder="Re-enter" required>
+        <div class="input group-append mb-3">
+      <span class="input-group-text" id="message">&#10060</span>
+    </div>
+        <div class="input-group-prepend mb-3">
+       <span class="input-group-text" id="strength" style="font-weight: bold">Strength</span>
+    </div>
+    </div>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1" required >Name  </span>
+      </div>
+      <input type="text" name="first_name" class="form-control " placeholder="First Name" pattern="[a-zA-Z]{3,30}" maxlength="32" title="Only Characters without numbers" required>
+      <input type="text" name="last_name" class="form-control " placeholder="Last Name" pattern="[a-zA-Z]{3,30}" maxlength="32" title="Only Characters without numbers" required>
+      <select class="custom-select" id="gender" name="gender">
+        <option selected>Gender</option>
+        <option value="M">Male</option>
+        <option value="W">Female</option>
+        <option value="D">Diverse</option>
+      </select>
+    </div>
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="basic-addon1" required >Birthday (18 or older)</span>
+  </div>
+      <input class="form-control" id="date" name="date" placeholder="MM.DD.YYYY" type="text" onchange="checkBDay()"/>
+     </div>
+  </div>
+  </div>
+
+  <div class="input-group">
+    <div class="input-group-prepend mb-3">
+      <span class="input-group-text" id="adress">Adress</span>
+    </div>
+ <input type="text" name ="street" id="street" class="form-control mb-3 " placeholder="Street" required>
+   <input type="text" name="housenumber" id="housenumber" class="form-control mb-3" placeholder="Number" width="20%" required>
+    <input type="text" name="zip" id="zip" class="form-control mb-3" placeholder="Zip" pattern="^[0-9].{1,5}" title="Max 5 Digit Zip_Code"required>
+      <input type="text" name="city" id="city" class="form-control mb-3" placeholder="City" required>
+
+
+  </div>
+
+  <input type="submit" name="submit" id="submit" class="btn btn-primary mt-3">
+</form>
+
+<script type="text/javascript">
+  var check = function() {
+
+
+  if ((document.getElementById('password').value == document.getElementById('repassword').value) && (document.getElementById('password').value != "") && (document.getElementById('repassword').value != ""))
+    {
+    document.getElementById('message').innerHTML = "&#9989"; // Checkmark symbol
+
+  } else {
+    document.getElementById('message').innerHTML = '&#10060'; // failure cross
+      }
+}
+
+    $(document).ready(function(){
+        var date_input=$('input[name="date"]'); //our date input has the name "date"
+        var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+        date_input.datepicker({
+            format: 'dd.mm.yyyy',
+            container: container,
+            todayHighlight: true,
+            autoclose: true,
+        })
+    })
+
+let d = document, [inputs, submit] = [
+    d.querySelectorAll('[type="text"]'),
+    d.querySelector('#submit')]
+    submit.disabled = true
+
+for (i = 0; i < inputs.length; i++) {
+  inputs[i].addEventListener('input',() => {
+    let values = []
+    inputs.forEach(v => values.push(v.value))
+    submit.disabled = values.includes('')
+  })
+      if(document.getElementById('message').innerHTML == '&#10060' )
+    {
+      submit.disabled = true;
+    }
+}
+
+
+function scorePassword(pass) {
+    var score = 0;
+    if (!pass)
+        return score;
+
+    // award every unique letter until 5 repetitions
+    var letters = new Object();
+    for (var i=0; i<pass.length; i++) {
+        letters[pass[i]] = (letters[pass[i]] || 0) + 1;
+        score += 5.0 / letters[pass[i]];
+    }
+
+    // bonus points for mixing it up
+    var variations = {
+        digits: /\d/.test(pass),
+        lower: /[a-z]/.test(pass),
+        upper: /[A-Z]/.test(pass),
+        nonWords: /\W/.test(pass),
+    }
+
+    variationCount = 0;
+    for (var check in variations) {
+        variationCount += (variations[check] == true) ? 1 : 0;
+    }
+    score += (variationCount - 1) * 10;
+
+    return parseInt(score);
+}
+
+function checkPassStrength(pass) {
+    var score = scorePassword(pass);
+    if (score > 80) {
+      document.getElementById('strength').innerHTML = "strong";
+      document.getElementById('strength').style.color = 'green'
+      document.getElementById('meter').style.background = 'green'
+      document.getElementById('meter').value = score;
+
+    } else if (score > 60){
+      document.getElementById('strength').innerHTML = "ok";
+      document.getElementById('strength').style.color = 'orange'
+      document.getElementById('meter').style.background = 'orange'
+      document.getElementById('meter').value = score;
+
+    } else if (score >= 30){
+      document.getElementById('strength').innerHTML = "weak";
+      document.getElementById('strength').style.color = 'red'
+      document.getElementById('meter').style.background = 'red';
+
+
+    } else {
+      document.getElementById('strength').innerHTML = "very weak";
+      document.getElementById('strength').style.color = 'red'
+      document.getElementById('meter').value = score;
+      document.getElementById('meter').style.background = 'red';
+      document.getElementById('meter').width = "25%";
+
+    }
+
+}
+
+function checkBDay() {
+//TODO need to implement
+var Date1 = document.getElementById('date').value;
+var today = new Date();
+var todayDD = String(today.getDate()).padStart(2, '0');
+var todayMM = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+var todayYYYY = today.getFullYear();
+
+today = todayDD + '.' + todayMM + '.' + todayYYYY;
+//Todo get the difference between both Dates to check if 18 or older !
+Date1DD = parseInt(Date1.charAt(0) + Date1.charAt(1));
+Date1MM = parseInt(Date1.charAt(3) + Date1.charAt(4));
+Date1YY = parseInt(Date1.charAt(6) + Date1.charAt(7) + Date1.charAt(8) + Date1.charAt(9));
+
+
+if((todayYYYY - Date1YY) < 18)  {
+  alert("You are to young")
+}
+if((todayYYYY - Date1YY) == 18) {
+  if(Date1MM > todayMM) {
+    alert("You must be at least 18 years old")
+  } else{
+    if((Date1DD > todayDD) && (Date1MM == todayMM)) {
+      alert("You are not 18")
+      }
+  }
+
+}
+
+return true
+
+}
+
+</script>
+
+<style>
+  meter {
+  /* Reset the default appearance */
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+
+  margin: 0 auto 1em;
+  width: 100%;
+  height: 0.5em;
+
+  /* Applicable only to Firefox */
+  background: none;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+meter::-webkit-meter-bar {
+  background: none;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+</style>
+ {% endblock %}
