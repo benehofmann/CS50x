@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Quotes
+{% endblock %}
+
+{% block main %}
+
+        <form action="/quote" method="post" > <!--Submit Data via post to the quote route-->
+        <input type="text" name="symbol" placeholder="Stock Symbol" pattern="{1-4}" autocomplete="off">
+        <input type="submit" name="submit">
+
+{% endblock %}

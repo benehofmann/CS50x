@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Values
+{% endblock %}
+
+{% block main %}
+
+        A share of {{ stock["symbol"] }} costs {{ stock["price"] }} USD
+
+        <form action="/buy" method="post" value="Buy" > <!--Submit Data via post to the quote route-->
+       <!-- <label name="symbol">{{ stock["symbol"] }}</label>
+        <input type="submit" name="submit" value="Buy">-->
+
+{% endblock %}
